@@ -1,0 +1,5 @@
+model,cv_average_precision,best_params
+Logistic Regression,0.6415069,"{'model__C': 0.1}"
+Hist Gradient Boosting,0.5962638,"{'model__learning_rate': 0.05, 'model__max_iter': 80, 'model__max_leaf_nodes': 15}"
+Random Forest,0.5932457,"{'model__max_depth': None, 'model__min_samples_leaf': 10, 'model__n_estimators': 80}"
+Decision Tree,0.5262899,"{'model__max_depth': 5, 'model__min_samples_leaf': 25}"
