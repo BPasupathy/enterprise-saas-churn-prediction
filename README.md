@@ -4,70 +4,131 @@
 **Assignment:** Required Capstone Project 24.1 — Final Report
 
 ## Executive summary
-This project demonstrates an end-to-end machine-learning workflow for identifying enterprise SaaS accounts with elevated churn risk: business understanding, data quality, exploratory analysis, feature preparation, multi-model classification, stratified cross-validation, hyperparameter tuning, evaluation and model interpretation.
 
-**Data transparency:** The project uses a synthetic teaching dataset of 3,000 simulated SaaS accounts. It is not real customer telemetry. The churn label is generated from a documented simulation mechanism using adoption, engagement, satisfaction, value-realization and support signals. Results are educational demonstrations, not real-world predictions or industry benchmarks.
+This capstone demonstrates a complete analytical workflow for exploring and classifying churn outcomes among enterprise SaaS accounts. It covers business understanding, data quality, exploratory analysis, feature preparation, four classification algorithms, cross-validation, hyperparameter tuning, holdout evaluation, permutation importance and exploratory statistical tests.
 
-## Business rationale and research question
-Churn and downgrade can reduce recurring revenue and customer lifetime value. Customer Success teams need a consistent way to prioritize proactive account reviews. The research question is: **Can account profile, product adoption, engagement and value-realization indicators distinguish simulated churn outcomes, and which classifier provides the most useful ranking of at-risk accounts?**
+**Important data limitation:** The 3,000-account dataset is synthetic and the churn label is generated from a documented simulation mechanism using adoption, engagement, satisfaction, value-realization and support signals. These results demonstrate analytical methods only. They are not evidence of real-world predictive performance, causal relationships or industry churn benchmarks.
 
-## Executed model findings
-The four classifiers were compared using stratified 3-fold cross-validation and GridSearchCV, selecting by Average Precision (PR-AUC). Logistic Regression ranked first on cross-validation (mean AP **0.642**) and was selected.
+## Business problem and research question
 
-| Holdout model | Precision | Recall | F1 | Average Precision | ROC-AUC |
+Customer churn and downgrade can reduce recurring revenue and customer lifetime value. Customer Success teams need a consistent way to prioritize proactive account reviews.
+
+**Research question:** Can account profile, product adoption, engagement and value-realization indicators distinguish simulated churn outcomes, and which classifier provides the most useful ranking of potentially at-risk accounts?
+
+## Results
+
+The four classifiers were evaluated using stratified 3-fold cross-validation and GridSearchCV. Average Precision (the area under the precision-recall curve, or PR-AUC) was used for model selection because the positive class is the minority class and missed churn cases matter to the retention use case.
+
+### Cross-validation results
+
+| Model | Mean CV Average Precision |
+|---|---:|
+| Logistic Regression | **0.642** |
+| Hist Gradient Boosting | 0.596 |
+| Random Forest | 0.593 |
+| Decision Tree | 0.526 |
+
+Logistic Regression was selected based on the highest mean cross-validated Average Precision.
+
+### Holdout results
+
+| Model | Precision | Recall | F1 | Average Precision | ROC-AUC |
 |---|---:|---:|---:|---:|---:|
-| Logistic Regression | 0.438 | 0.837 | 0.575 | **0.650** | **0.898** |
-| Random Forest | 0.528 | 0.707 | **0.605** | 0.603 | 0.881 |
+| Logistic Regression | 0.438 | **0.837** | 0.575 | **0.650** | **0.898** |
 | Hist Gradient Boosting | **0.667** | 0.457 | 0.542 | 0.621 | 0.884 |
+| Random Forest | 0.528 | 0.707 | **0.605** | 0.603 | 0.881 |
 | Decision Tree | 0.361 | 0.663 | 0.467 | 0.463 | 0.816 |
 
-Logistic Regression provides the strongest recall and Average Precision in this run, while Random Forest provides a higher F1 and precision/recall balance. The top permutation-importance signals for Logistic Regression were license utilization, CSAT score, QBR attendance, days to renewal and customer tier. These are associations in simulated data, not causal effects.
+Logistic Regression has the highest recall and Average Precision in this run. At the default 0.50 threshold, it identifies approximately 84% of churn-positive holdout accounts, while its 0.438 precision means many flagged accounts are not churn-positive under the simulation. Random Forest has the highest F1, and Hist Gradient Boosting has the highest precision. Threshold selection therefore depends on the cost of missed churn versus the Customer Success capacity required to review flagged accounts.
+
+### Model interpretation
+
+The five strongest permutation-importance signals for the selected model were:
+
+1. License utilization
+2. Customer satisfaction (CSAT)
+3. Quarterly business review attendance
+4. Days to renewal
+5. Customer tier
+
+Permutation importance measures the change in holdout Average Precision when a feature is shuffled. It is a model diagnostic, not evidence that a feature causes churn. These patterns are expected to some extent because related signals were used to generate the synthetic target.
+
+## Exploratory statistical findings
+
+Notebook 04 compares selected features between simulated churned and retained accounts and tests categorical associations.
+
+- License utilization, DAU/MAU ratio, CSAT, support case volume and days to renewal differ statistically between the two simulated outcome groups (Mann–Whitney U tests).
+- Customer tier has a statistically detectable association with the simulated outcome (chi-square p = 0.0056), but Cramér's V is small (0.059).
+- Industry and region are not statistically associated with the simulated outcome in these tests.
+- These are exploratory, unadjusted tests on synthetic data. Statistical significance does not imply practical importance or causality.
+
+The detailed results are saved in [inferential_tests.csv](data/processed/inferential_tests.csv).
 
 ## Methodology
-1. Inspect data dimensions, missingness, duplicates, target balance and feature distributions.
-2. Exclude account identifiers from predictors; stratify train/test split.
-3. Impute numeric and categorical missing values inside pipelines; scale numeric features and one-hot encode categorical features.
-4. Compare Logistic Regression, Decision Tree, Random Forest and HistGradientBoosting.
-5. Tune using stratified 3-fold GridSearchCV and Average Precision.
-6. Evaluate the holdout set using precision, recall, F1, Average Precision and ROC-AUC.
-7. Interpret the selected model using permutation importance.
+
+1. Generate and audit 3,000 synthetic account records; inspect missing values, duplicates and class balance.
+2. Explore categorical and continuous variables using labelled visualizations.
+3. Exclude account identifiers; stratify the train/test split.
+4. Impute missing numeric and categorical values within pipelines; scale numeric variables and one-hot encode categorical variables.
+5. Compare Logistic Regression, Decision Tree, Random Forest and HistGradientBoosting.
+6. Tune hyperparameters with stratified 3-fold GridSearchCV using Average Precision.
+7. Evaluate the selected models on a holdout set using precision, recall, F1, Average Precision and ROC-AUC.
+8. Interpret the selected model using permutation importance and run exploratory statistical tests.
+
+## Business recommendations
+
+For a real SaaS business, use product adoption, engagement, customer satisfaction, value-realization and support trends as prompts for structured account reviews—not as automatic churn decisions.
+
+Recommended operational approach:
+
+- Establish consistent account-level definitions for churn, downgrade, renewal and observation windows.
+- Prioritize accounts using a combination of risk score, ARR at risk, renewal proximity and Customer Success capacity.
+- Trigger targeted reviews to investigate adoption barriers, unresolved support issues and value-realization gaps.
+- Record interventions and outcomes so that retention effectiveness can be measured.
+- Evaluate incremental retained ARR against intervention cost before scaling the approach.
+
+## Limitations and next steps
+
+- The data and labels are synthetic; model metrics are not evidence of production readiness.
+- The target is generated using related input signals, so the exercise tests whether models can recover a known simulation pattern.
+- A random train/test split demonstrates the workflow but does not simulate future-period forecasting.
+- A production study requires historical customer data with clearly defined observation and churn windows, leakage controls and temporal validation.
+- Further work should include probability calibration, segment-level evaluation, threshold selection based on business costs, human review and a controlled pilot measuring incremental retained ARR.
 
 ## Repository structure
+
 ```text
 enterprise-saas-churn-prediction/
 ├── README.md
 ├── requirements.txt
-├── .gitignore
 ├── data/
 │   ├── README.md
-│   ├── raw/  # generated CSV dataset
-│   └── processed/  # model evaluation summaries
+│   └── processed/
+│       ├── cross_validation_results.csv
+│       ├── holdout_model_metrics.csv
+│       ├── permutation_importance.csv
+│       └── inferential_tests.csv
 ├── scripts/
-│   └── generate_synthetic_dataset.py  # creates data/raw CSV
-├── notebooks/
-│   ├── 01_business_understanding_and_eda.ipynb
-│   ├── 02_feature_preparation.ipynb
-│   └── 03_model_training_and_evaluation.ipynb
-└── images/  # charts generated by the notebooks
+│   └── generate_synthetic_dataset.py
+└── notebooks/
+    ├── 01_business_understanding_and_eda.ipynb
+    ├── 02_feature_preparation.ipynb
+    ├── 03_model_training_and_evaluation.ipynb
+    └── 04_inferential_analysis.ipynb
 ```
 
 ## Notebooks
-- [01 — Business understanding and EDA](notebooks/01_business_understanding_and_eda.ipynb)
+
+- [01 — Business understanding and exploratory data analysis](notebooks/01_business_understanding_and_eda.ipynb)
 - [02 — Feature preparation](notebooks/02_feature_preparation.ipynb)
 - [03 — Model training and evaluation](notebooks/03_model_training_and_evaluation.ipynb)
-
-## Business recommendations and next steps
-Use adoption, engagement, customer satisfaction, value-realization and support trends as prompts for structured account reviews—not as automatic churn decisions. Validate thresholds on a governed, time-stamped production dataset. Before deployment, use temporal validation, leakage controls, probability calibration, segment-level fairness checks and a controlled pilot measuring incremental retained ARR against intervention cost. Keep a human Customer Success owner in the decision loop.
-
-## Limitations
-The data and labels are synthetic, and the target was generated using related input signals. Random train/test splitting demonstrates the workflow but is not a production forecasting design. Results do not establish causality, real-world calibration, fairness or financial impact. A production study requires historical account data with clearly defined observation and churn windows.
-
-## Reference approach
-The structure and communication approach are informed by the three supplied course examples: multi-model comparison and interpretation, sequential notebooks for end-to-end analysis, and an executive README organized around rationale, research question, data, methodology, results and next steps. Their subject matter and findings are not reused as this project's results.
+- [04 — Inferential analysis](notebooks/04_inferential_analysis.ipynb)
 
 ## Run locally
+
+Install dependencies from `requirements.txt`, then run the notebooks in numerical order from the repository root. Notebook 01 generates the synthetic CSV when it is missing. Notebook 03 writes the model metrics and permutation-importance summaries to `data/processed/`; Notebook 04 writes the inferential test results. EDA and model charts are saved under `images/`.
+
 ```bash
 python -m pip install -r requirements.txt
 jupyter lab
 ```
-Run the notebooks in numerical order from the repository root. Notebook 01 generates the synthetic CSV if it is missing by running `scripts/generate_synthetic_dataset.py`. Charts are written to `images/`; model metrics and feature-importance summaries are written to `data/processed/`.

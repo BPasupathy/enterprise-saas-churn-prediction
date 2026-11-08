@@ -1,0 +1,9 @@
+feature,test,statistic,p_value,cramers_v
+customer_tier,Chi-square independence,10.374852814304125,0.005586365360407346,0.058807178740649585
+industry,Chi-square independence,2.1247047559116097,0.831634586332578,0.02661268341669444
+region,Chi-square independence,0.807815106377177,0.8475968643286865,0.016409500361855192
+license_utilization_pct,Mann-Whitney U,188955.5,1.792169350016953e-117,
+dau_mau_ratio,Mann-Whitney U,267371.5,5.632199310577158e-76,
+csat_score,Mann-Whitney U,261899.0,5.767390705835996e-78,
+support_cases_last_90d,Mann-Whitney U,783257.5,8.383283443815996e-33,
+days_to_renewal,Mann-Whitney U,504312.0,5.117758362876958e-06,
