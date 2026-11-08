@@ -21,7 +21,7 @@ The four classifiers were compared using stratified 3-fold cross-validation and 
 | Hist Gradient Boosting | **0.667** | 0.457 | 0.542 | 0.621 | 0.884 |
 | Decision Tree | 0.361 | 0.663 | 0.467 | 0.463 | 0.816 |
 
-Logistic Regression provides the strongest recall and Average Precision in this run, while Random Forest provides a higher F1 and precision/recall balance. The top permutation-importance signals for Logistic Regression were CSAT score, license utilization, industry, licensed seats and automated workflows. These are associations in simulated data, not causal effects.
+Logistic Regression provides the strongest recall and Average Precision in this run, while Random Forest provides a higher F1 and precision/recall balance. The top permutation-importance signals for Logistic Regression were license utilization, CSAT score, QBR attendance, days to renewal and customer tier. These are associations in simulated data, not causal effects.
 
 ## Methodology
 1. Inspect data dimensions, missingness, duplicates, target balance and feature distributions.
