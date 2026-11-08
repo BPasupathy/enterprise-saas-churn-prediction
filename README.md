@@ -40,7 +40,9 @@ enterprise-saas-churn-prediction/
 ├── .gitignore
 ├── data/
 │   ├── README.md
-│   └── raw/enterprise_saas_churn_synthetic.csv
+│   └── processed/  # generated evaluation summaries
+├── scripts/
+│   └── generate_synthetic_dataset.py  # creates data/raw CSV
 ├── notebooks/
 │   ├── 01_business_understanding_and_eda.ipynb
 │   ├── 02_feature_preparation.ipynb
@@ -67,4 +69,4 @@ The structure and communication approach are informed by the three supplied cour
 python -m pip install -r requirements.txt
 jupyter lab
 ```
-Run the notebooks in numerical order from the repository root. The included CSV is used directly; charts and metric exports are written when the notebooks execute.
+Run the notebooks in numerical order from the repository root. Notebook 01 generates the synthetic CSV if it is missing by running `scripts/generate_synthetic_dataset.py`. Charts are written to `images/`; model metrics and feature-importance summaries are written to `data/processed/`.
