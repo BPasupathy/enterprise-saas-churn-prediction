@@ -40,7 +40,8 @@ enterprise-saas-churn-prediction/
 ├── .gitignore
 ├── data/
 │   ├── README.md
-│   └── processed/  # generated evaluation summaries
+│   ├── raw/  # generated CSV dataset
+│   └── processed/  # model evaluation summaries
 ├── scripts/
 │   └── generate_synthetic_dataset.py  # creates data/raw CSV
 ├── notebooks/
