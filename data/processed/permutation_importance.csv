@@ -1,0 +1,17 @@
+feature,importance_mean,importance_std
+license_utilization_pct,0.18559696,0.03744797
+csat_score,0.15771289,0.02293311
+qbrs_attended_last_4,0.03820545,0.01795224
+days_to_renewal,0.01931639,0.00743469
+customer_tier,0.01893339,0.00691408
+annual_recurring_revenue_usd,0.01815251,0.00387376
+dau_mau_ratio,0.01714253,0.00970829
+kpi_milestones_achieved_pct,0.00298400,0.01472071
+tenure_months,0.00284213,0.00505338
+monthly_api_calls,0.00268323,0.00147797
+industry,0.00239427,0.00518156
+licensed_seats,0.00230555,0.00693776
+support_cases_last_90d,0.00130959,0.00098397
+active_modules,0.00085311,0.00086196
+automated_workflows,-0.00021964,0.00124754
+region,-0.00036190,0.00258264
