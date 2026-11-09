@@ -132,3 +132,35 @@ Install dependencies from `requirements.txt`, then run the notebooks in numerica
 python -m pip install -r requirements.txt
 jupyter lab
 ```
+
+
+## Deploy the interactive dashboard to Vercel
+
+The repository now includes a Next.js dashboard at the project root. It presents the model comparison, holdout metrics, feature-importance signals, statistical findings and links to the executed notebooks and generated artifacts.
+
+**Deploy steps**
+
+1. Push this repository to GitHub (the dashboard is already committed to `main`).
+2. Sign in to [Vercel](https://vercel.com/) and select **Add New → Project**.
+3. Import `BPasupathy/enterprise-saas-churn-prediction` from GitHub.
+4. Keep **Root Directory** as `./`.
+5. Select **Next.js** as the framework preset.
+6. Use `npm run build` as the build command and leave the output directory at its default.
+7. Select **Deploy**.
+
+Vercel will install the dependencies from `package.json` and build the dashboard. The dashboard is a read-only presentation of the committed analysis; model training remains in the Python notebooks and is not run as a live prediction API.
+
+### Dashboard structure
+
+```text
+app/
+├── globals.css
+├── layout.tsx
+└── page.tsx
+package.json
+tsconfig.json
+next.config.ts
+next-env.d.ts
+```
+
+The dashboard links to the source report, notebooks, synthetic dataset, processed metrics and charts in this repository. All results must be interpreted in light of the synthetic-data limitation described above.
