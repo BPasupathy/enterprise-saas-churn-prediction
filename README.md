@@ -1,6 +1,6 @@
 ## Live Vercel deployment
 
-[Open the deployed project](https://enterprise-saas-churn-prediction.vercel.app)
+[Open the deployed project](https://enterprise-saas-churn-prediction-bpasupathy.vercel.app)
 
 # Enterprise SaaS Churn Risk — Capstone Project 24.1
 
