@@ -34,7 +34,7 @@ export default function Home() {
       <header className="topbar">
         <a className="brand" href="#"><span className="brand-mark">S</span><span>Signal<span className="brand-muted"> / SaaS Intelligence</span></span></a>
         <nav><a href="#overview">Overview</a><a href="#models">Model performance</a><a href="#insights">Insights</a><a href="#methodology">Methodology</a></nav>
-        <div className="hero-actions"><a className="repo-link" href="https://enterprise-saas-churn-prediction.vercel.app" target="_blank" rel="noreferrer">Live Vercel deployment ↗</a><a className="repo-link" href={repo} target="_blank" rel="noreferrer">GitHub repository ↗</a></div>
+        <div className="hero-actions"><a className="repo-link" href="https://enterprise-saas-churn-prediction-bpasupathy.vercel.app" target="_blank" rel="noreferrer">Live Vercel deployment ↗</a><a className="repo-link" href={repo} target="_blank" rel="noreferrer">GitHub repository ↗</a></div>
       </header>
 
       <section className="hero" id="overview">
